@@ -61,22 +61,22 @@ describe("production safety guard", () => {
   it("throws MockProductionError when enableMockMode() is called with NODE_ENV=production", () => {
     const original = process.env.NODE_ENV;
     try {
-      process.env.NODE_ENV = "production";
+   (process.env as any).NODE_ENV = "production";
       expect(() => enableMockMode()).toThrow(MockProductionError);
       expect(() => enableMockMode()).toThrow(/production environment/);
     } finally {
-      process.env.NODE_ENV = original;
+    (process.env as any).NODE_ENV = original;
     }
   });
 
   it("does not enable mock mode when the production guard fires", () => {
     const original = process.env.NODE_ENV;
     try {
-      process.env.NODE_ENV = "production";
+      (process.env as any).NODE_ENV = "production";
       try { enableMockMode(); } catch { /* expected */ }
       expect(isMockModeActive()).toBe(false);
     } finally {
-      process.env.NODE_ENV = original;
+      (process.env as any).NODE_ENV = original;
     }
   });
 
@@ -89,11 +89,11 @@ describe("production safety guard", () => {
   it("activates successfully in development (NODE_ENV=development)", () => {
     const original = process.env.NODE_ENV;
     try {
-      process.env.NODE_ENV = "development";
+      (process.env as any).NODE_ENV = "development";
       expect(() => enableMockMode()).not.toThrow();
       expect(isMockModeActive()).toBe(true);
     } finally {
-      process.env.NODE_ENV = original;
+      (process.env as any).NODE_ENV = original;
       disableMockMode();
     }
   });
@@ -101,11 +101,11 @@ describe("production safety guard", () => {
   it("activates successfully in test (NODE_ENV=test)", () => {
     const original = process.env.NODE_ENV;
     try {
-      process.env.NODE_ENV = "test";
+      (process.env as any).NODE_ENV = "test";
       expect(() => enableMockMode()).not.toThrow();
       expect(isMockModeActive()).toBe(true);
     } finally {
-      process.env.NODE_ENV = original;
+      (process.env as any).NODE_ENV = original;
       disableMockMode();
     }
   });
